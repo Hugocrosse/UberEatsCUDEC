@@ -62,7 +62,23 @@
       </div>
     </form>
   </div>
+<script src="https://www.gstatic.com/firebasejs/6.0.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/6.0.1/firebase-firestore.js"></script>
+<script>
 
+const firebaseConfig = {
+  apiKey: "AIzaSyC0eqa7Oe3x3mQ6WZd6hp7GDwCna7UUOmI",
+  authDomain: "ubereatscudechugosp-96114.firebaseapp.com",
+  projectId: "ubereatscudechugosp-96114",
+  storageBucket: "ubereatscudechugosp-96114.firebasestorage.app",
+  messagingSenderId: "291584746174",
+  appId: "1:291584746174:web:cb73e0d0191f874cd2f4ef"
+};
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+ </script>
   <script src="/js/index.js"></script>
+  <script src="/js/db.js"></script>
 </body>
 </html>
