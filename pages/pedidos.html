@@ -1,10 +1,11 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>La Noria</title>
+  <title>COMEFELIZ</title>
 
   <!-- Materialize CSS -->
   <link rel="stylesheet" href="/css/materialize.min.css">
@@ -20,7 +21,7 @@
   <!-- Barra de navegación -->
   <nav class="z-depth-0">
     <div class="nav-wrapper container">
-      <a href="/">La Noria</a>
+      <a href="/">COMEFELIZ</a>
 
       <span class="right grey-text text-darken-1">
         <i class="material-icons sidenav-trigger" data-target="side-menu">menu</i>
@@ -30,7 +31,7 @@
 
   <!-- Menú lateral -->
   <ul id="side-menu" class="sidenav side-menu">
-    <li><a class="subheader">La Noria</a></li>
+    <li><a class="subheader">COMEFELIZ</a></li>
     <li><a href="/" class="waves-effect">Home</a></li>
     <li><a href="/pages/about.html" class="waves-effect">About</a></li>
 
@@ -50,11 +51,24 @@
 
       <h5 class="center">Pedido de Platillo</h5>
 
+      <!-- Nombre -->
+      <div class="input-field">
+        <input type="text" id="nombre">
+        <label for="nombre">Nombre de la persona</label>
+      </div>
+
+      <!-- Dirección -->
+      <div class="input-field">
+        <input type="text" id="direccion">
+        <label for="direccion">Dirección</label>
+      </div>
+
+      <!-- Platillo -->
       <div class="input-field">
         <select id="Platillo">
           <option value="" disabled selected>Seleccione un Platillo</option>
-          <option value="Tacos">Tacos</option>
-          <option value="Burrito">Burrito</option>
+          <option value="Alitas">Alitas</option>
+          <option value="Boneless">Boneless</option>
           <option value="Hamburguesa">Hamburguesa</option>
         </select>
         <label>Platillo</label>
@@ -76,22 +90,25 @@
 
     </div>
 
+    <button id=""btnUbicacion>Ubicacion</button>
+
   </div>
 
-  <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/6.0.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/6.0.1/firebase-firestore.js"></script>
 
-  <!-- Tu configuración -->
   <script src="/js/firebase.js"></script>
 
   <script>
-    // Inicializar Materialize
     document.addEventListener('DOMContentLoaded', function () {
 
+      // Inicializar Materialize
       var elems = document.querySelectorAll('select');
       M.FormSelect.init(elems);
 
+      // Controles
+      const nombre = document.getElementById("nombre");
+      const direccion = document.getElementById("direccion");
       const platillo = document.getElementById("Platillo");
       const guardar = document.getElementById("btnGuardar");
       const cancelar = document.getElementById("btnCancelar");
@@ -99,25 +116,45 @@
       // Guardar en Firestore
       guardar.addEventListener("click", function () {
 
+        if (nombre.value.trim() == "") {
+          M.toast({html: "Ingrese el nombre"});
+          return;
+        }
+
+        if (direccion.value.trim() == "") {
+          M.toast({html: "Ingrese la dirección"});
+          return;
+        }
+
         if (platillo.value == "") {
           M.toast({html: "Seleccione un platillo"});
           return;
         }
 
         db.collection("Pedidos").add({
+          nombre: nombre.value.trim(),
+          direccion: direccion.value.trim(),
           platillo: platillo.value,
           fecha: new Date()
         })
         .then(function () {
+
           M.toast({html: "Pedido guardado correctamente"});
 
+          // Limpiar campos
+          nombre.value = "";
+          direccion.value = "";
           platillo.selectedIndex = 0;
+
+          M.updateTextFields();
           M.FormSelect.init(document.querySelectorAll('select'));
 
         })
         .catch(function (error) {
+
           console.log(error);
           M.toast({html: "Error al guardar"});
+
         });
 
       });
@@ -125,7 +162,11 @@
       // Cancelar
       cancelar.addEventListener("click", function () {
 
+        nombre.value = "";
+        direccion.value = "";
         platillo.selectedIndex = 0;
+
+        M.updateTextFields();
         M.FormSelect.init(document.querySelectorAll('select'));
 
         M.toast({html: "Operación cancelada"});
