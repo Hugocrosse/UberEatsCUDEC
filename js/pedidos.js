@@ -33,9 +33,22 @@ document.getElementById("btnUbicacion").addEventListener("click", function() {
 });
 
 function exito(posicion){
-    let latitud = posicion.coords.latitude;
-}
 
+    let latitud = posicion.coords.latitude;
+    let longitud = posicion.coords.longitude;
+    fetch(`http://nominatim.openstreetmap.org/reverse?lat=${latitud}&lon=${longitud}&format=json`, {
+        headers: { 
+            'User-Agent': 'UberEatsCudecHugoSP (salazarperezh21@gmail.com)'
+        }    
+    })
+
+    .then(respuesta => respuesta.json())
+    .then(data => {
+        let ciudad = data.address.city;
+        let pais = data.address.country;
+        document.getElementById("ubicacion").value = `${ciudad}, ${pais}`;
+})
+}
 function error() {
     alert("No se pude obtener la ubicacion exacta");
 }
