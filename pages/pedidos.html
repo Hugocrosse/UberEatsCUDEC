@@ -14,6 +14,15 @@
 
   <!-- Materialize JS -->
   <script src="/js/materialize.min.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+    crossorigin=""/>
+  <script src ="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+    crossorigin=""></script>
+  <style>
+      #mapa {height:180px; }
+  </style>
 </head>
 
 <body class="grey lighten-4">
@@ -91,6 +100,7 @@
     </div>
 
     <button id=""btnUbicacion>Ubicacion</button>
+    <div id="mapa"></div>
 
   </div>
 
@@ -99,82 +109,9 @@
 
   <script src="/js/firebase.js"></script>
 
-  <script>
-    document.addEventListener('DOMContentLoaded', function () {
 
-      // Inicializar Materialize
-      var elems = document.querySelectorAll('select');
-      M.FormSelect.init(elems);
+  <script src="/js/pedidos.js"></script>
 
-      // Controles
-      const nombre = document.getElementById("nombre");
-      const direccion = document.getElementById("direccion");
-      const platillo = document.getElementById("Platillo");
-      const guardar = document.getElementById("btnGuardar");
-      const cancelar = document.getElementById("btnCancelar");
-
-      // Guardar en Firestore
-      guardar.addEventListener("click", function () {
-
-        if (nombre.value.trim() == "") {
-          M.toast({html: "Ingrese el nombre"});
-          return;
-        }
-
-        if (direccion.value.trim() == "") {
-          M.toast({html: "Ingrese la dirección"});
-          return;
-        }
-
-        if (platillo.value == "") {
-          M.toast({html: "Seleccione un platillo"});
-          return;
-        }
-
-        db.collection("Pedidos").add({
-          nombre: nombre.value.trim(),
-          direccion: direccion.value.trim(),
-          platillo: platillo.value,
-          fecha: new Date()
-        })
-        .then(function () {
-
-          M.toast({html: "Pedido guardado correctamente"});
-
-          // Limpiar campos
-          nombre.value = "";
-          direccion.value = "";
-          platillo.selectedIndex = 0;
-
-          M.updateTextFields();
-          M.FormSelect.init(document.querySelectorAll('select'));
-
-        })
-        .catch(function (error) {
-
-          console.log(error);
-          M.toast({html: "Error al guardar"});
-
-        });
-
-      });
-
-      // Cancelar
-      cancelar.addEventListener("click", function () {
-
-        nombre.value = "";
-        direccion.value = "";
-        platillo.selectedIndex = 0;
-
-        M.updateTextFields();
-        M.FormSelect.init(document.querySelectorAll('select'));
-
-        M.toast({html: "Operación cancelada"});
-
-      });
-
-    });
-  </script>
-
+ 
 </body>
 </html>

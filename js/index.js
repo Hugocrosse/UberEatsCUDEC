@@ -39,3 +39,4 @@ function actualizarPlatillo(platillo, id) {
   tarjeta.querySelector(".recipe-price").innerHTML = `Precio: $${platillo.Precio}`;
 };
 
+
